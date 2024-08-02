@@ -21,7 +21,7 @@ class FinanceData:
     def __init__(self, cik):
         self.cik = self.validate_length(str(cik))
         self.base_url = "https://data.sec.gov/"
-        self.headers =  { "User-Agent": "AdminContact@jeronimo.landafloresx19@gmail.com", "Accept-Encoding": "gzip, deflate"}
+        self.headers = ""
         self.aggregator = False
 
 
