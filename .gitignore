@@ -1,0 +1,11 @@
+__pycache__
+.DS_Store
+.venv
+alembic/
+api/
+notes/
+testing_scripts/
+*.txt
+*.log
+*.ini
+setup.py
