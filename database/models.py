@@ -11,7 +11,7 @@ except:
 Base = declarative_base()
 
 ################################################
-#        SCHEMA'S FOR POSTFRES DATABASE        #
+#        SCHEMA'S FOR POSTGRES DATABASE        #
 ################################################
 
 class CompanyData(Base):
