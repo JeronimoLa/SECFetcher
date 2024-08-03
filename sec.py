@@ -23,7 +23,8 @@ class FinanceData:
     def __init__(self, cik):
         self.cik = self.validate_length(str(cik))
         self.base_url = "https://data.sec.gov/"
-        self.headers =  config["user_agent"]
+        self.headers = ""
+        self.aggregator = False
 
 
     def validate_length(self, cik, required_length=10):
