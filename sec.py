@@ -3,9 +3,9 @@ import json
 import time
 import logging
 
+from config import get_configuration
 from database.models import CompanyData, ProdCompanyData
 from database.db_engine import session
-
 
 logging.basicConfig(
     filename="app.log",
@@ -16,13 +16,14 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M",
 )
 
+config = get_configuration()
+
 
 class FinanceData:
     def __init__(self, cik):
         self.cik = self.validate_length(str(cik))
         self.base_url = "https://data.sec.gov/"
-        self.headers =  { "User-Agent": "AdminContact@jeronimo.landafloresx19@gmail.com", "Accept-Encoding": "gzip, deflate"}
-        self.aggregator = False
+        self.headers =  config["user_agent"]
 
 
     def validate_length(self, cik, required_length=10):
@@ -32,7 +33,6 @@ class FinanceData:
 
     def push_to_db(self, submission_data, value):
         import hashlib
-
         hash_string = hashlib.sha256(value.encode('utf-8')).hexdigest()
 
         primary_key = { "id": hash_string }
@@ -64,12 +64,13 @@ class FinanceData:
 
 
 def chunks(my_list, n):
-    other_list = []
+    results = []
     for i in range(0, len(my_list), n):        
-        my_list = my_list[i:i+n]
-        yield my_list
+        results = my_list[i:i+n]
+        yield results
         # for item in my_list:
-        #     print(item)         
+        #     print(item)
+
 
 def main():
 
@@ -88,7 +89,7 @@ def main():
 
     n = 10
     for x in chunks(cik_strm, n):
-        time.sleep(5)
+        time.sleep(1)
         try:
             for stock in x:
                 try:             
@@ -107,7 +108,6 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()
 
 
