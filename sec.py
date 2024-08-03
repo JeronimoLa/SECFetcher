@@ -23,8 +23,7 @@ class FinanceData:
     def __init__(self, cik):
         self.cik = self.validate_length(str(cik))
         self.base_url = "https://data.sec.gov/"
-        self.headers = config["User-Agent"]
-        self.aggregator = False
+        self.headers = config["user_agent"]
 
 
     def validate_length(self, cik, required_length=10):
@@ -51,13 +50,13 @@ class FinanceData:
         ticker_submissions_url = f"{self.base_url}submissions/CIK{self.cik}.json"
         print(ticker_submissions_url) # convert to log file
         res = requests.get(url=ticker_submissions_url, headers=self.headers)
+
         try:
             data = res.json()  # serializes the response object and turns it into a dict
         except JSONDecodeError:
             print('Response could not be serialized') 
         
         id_value = self.cik + str(data['filings'])   
-
         # if id_value == query_entry:
 
         full_data = self.push_to_db(data, id_value)
@@ -76,11 +75,7 @@ def chunks(my_list, n):
 def main():
 
     url =  "https://www.sec.gov/files/company_tickers.json"
-    headers =  {
-        "User-Agent": "AdminContact@jeronimo.landafloresx19@gmail.com",
-        "Host": "www.sec.gov" 
-    }
-
+    headers = config["user_agent"]
     res = requests.get(url, headers=headers)
     data = res.json()
 
@@ -93,7 +88,7 @@ def main():
         time.sleep(1)
         try:
             for stock in x:
-                try:             
+                try:         
                     fetcher = FinanceData(cik=stock[0])
                     data = fetcher.get_stock_submissions()
                     database_data.append(data)
