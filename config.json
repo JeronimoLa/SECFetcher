@@ -1,0 +1,6 @@
+{
+    "db_url" : "postgresql://jeronimo@localhost/worm",
+    "user_agent" : {
+        "User-Agent": "AdminContact@jeronimo.landafloresx19@gmail.com", "Accept-Encoding": "gzip, deflate"
+    }
+}

@@ -92,6 +92,7 @@ class ProdCompanyFilingsData(Base):
     primaryDocument = Column(String(85))
     primaryDocDescription = Column(String(15))
 
+
 class DevCompanyData(Base):
     __tablename__ = 'dev_company_filings_data'
 
