@@ -20,6 +20,7 @@ config = get_configuration()
 
 
 class FinanceData:
+
     def __init__(self, cik):
         self.cik = self.validate_length(str(cik))
         self.base_url = "https://data.sec.gov/"
@@ -40,7 +41,7 @@ class FinanceData:
         return res
 
 
-    def vaidate_existing_entry():pass
+    def validate_existing_entry():pass
 
 
     def get_stock_submissions(self):
@@ -94,6 +95,8 @@ def main():
                     database_data.append(data)
                 except Exception as e:
                     logging.info(f"An error occurred at getting stock data: {e}")
+            validate_existing_entry(database_data) # I can check against them once the i have iterateed for the chunk size or do it individually
+            time.sleep(1000)
             session.bulk_insert_mappings(ProdCompanyData, database_data)
             session.commit()
         except Exception as i:
