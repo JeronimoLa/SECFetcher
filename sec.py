@@ -36,31 +36,35 @@ class FinanceData:
 
     def push_to_db(self, submission_data, value):
         import hashlib
-        hash_string = hashlib.sha256(value.encode('utf-8')).hexdigest()
+        primary_key = hashlib.sha256(value.encode('utf-8')).hexdigest()
 
-        primary_key = { "id": hash_string }
-        print(submission_data.keys())
+        key = { "id": primary_key }
+        # print(submission_data.keys())
         #call the database and check the primiary key created just not against the existing one inside of the database
 
-
-        ## RIGHT HERE ##
         my_query = f""" 
                 SELECT id FROM prod_company_data
                 WHERE tickers = '{{{self.ticker}}}'"""
-
-        results = session.execute(text(my_query)).fetchall()
-        print(type(results))
-        print(results)
-        validate_existing_entry(results, primary_key)
-        time.sleep(5)
-        res = {**primary_key, **submission_data}
+        try:
+            results = session.execute(text(my_query)).fetchall()
+            # print(type(results))
+            # print(results)
+        except Exception:
+            print(e)
+        self.validate_existing_entry(results, primary_key)
+        # time.sleep(5)
+        res = {**key, **submission_data}
         return res
 
 
-    def validate_existing_entry(new_key, existing_key):
-
-        print(new_key)
+    def validate_existing_entry(self, new_key, existing_key):
+        time.sleep(3)
+        new = new_key[0]
+        print(new[0])
         print(existing_key)
+
+        if new[0] == existing_key:
+            print("match found")
 
 
 
@@ -107,13 +111,13 @@ def main():
 
     n = 10
     for x in chunks(cik_strm, n):
-        time.sleep(1)
+        time.sleep(10)
         try:
             for stock in x:
                 try:         
                     fetcher = FinanceData(cik=stock[0], ticker=stock[1])
                     data = fetcher.get_stock_submissions()
-                    time.sleep(100)
+                    # time.sleep(100)
                     database_data.append(data)
                 except Exception as e:
                     logging.info(f"An error occurred at getting stock data: {e}")
@@ -125,7 +129,7 @@ def main():
             logging.info(f"An error occurred commit to database: {i}")
             session.rollback()
         database_data = []
-    # session.commit()
+    session.commit()
 
 
 if __name__ == "__main__":
