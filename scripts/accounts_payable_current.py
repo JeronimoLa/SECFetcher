@@ -18,6 +18,9 @@ def accounts_payable():
     response = requests.get(url=url, headers=headers)
     data = response.json()
     keys = data.keys()
+
+    for item in data["units"]["USD"]:
+        print(item)
     print(keys)
 
 

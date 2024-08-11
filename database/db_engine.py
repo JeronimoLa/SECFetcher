@@ -6,8 +6,8 @@ config = get_configuration()
 
 DATABASE_URL = config["db_url"]
 
-# engine = create_engine(DATABASE_URL)
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL)
+# engine = create_engine(DATABASE_URL, echo=True)
 session = Session(engine)
 
 
